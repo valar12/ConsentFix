@@ -158,9 +158,9 @@ These scripts are provided as-is. Review and test in your environment before pro
 
 ## References
 
-* Push Security – ConsentFix research
-* Microsoft Entra ID documentation
-* MSEndpointMgr ConsentFix Quick Fix
+* Push Security – ConsentFix research https://pushsecurity.com/blog/consentfix
+* Microsoft Entra ID documentation https://learn.microsoft.com/en-us/entra/identity/
+* MSEndpointMgr ConsentFix Quick Fix https://msendpointmgr.com/2026/01/08/consentfix-quickfix/
 
 ---
 
