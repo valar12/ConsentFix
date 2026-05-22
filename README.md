@@ -65,6 +65,55 @@ This is **not a traditional CVE**; it is an abuse of expected OAuth behavior com
 
 ---
 
+### 4. `Invoke-EntraAppRole-AuthCodeFix.ps1`
+
+**Purpose:**
+
+* Runs identify → (optional) enforce → validate in a single workflow
+* Starts a transcript log for auditability
+* Supports `-WhatIf` and scoped app include/exclude options
+
+---
+
+
+## Unified Script (Primary Entry Point)
+
+All functionality is now implemented in a single script: `EntraAppRole-AuthCodeFix.ps1`.
+
+Modes:
+
+* `Identify`
+* `Enforce`
+* `Validate`
+* `RunAll`
+
+Examples:
+
+```powershell
+.\EntraAppRole-AuthCodeFix.ps1 -Mode Identify -ProfileName baseline-dev-tools
+.\EntraAppRole-AuthCodeFix.ps1 -Mode Enforce -GroupDisplayName "Restricted-Microsoft-CLI-Access" -ProfileName baseline-dev-tools -WhatIf
+.\EntraAppRole-AuthCodeFix.ps1 -Mode RunAll -GroupDisplayName "Restricted-Microsoft-CLI-Access" -ProfileName baseline-dev-tools -Transcript
+```
+
+The legacy numbered scripts remain as compatibility wrappers and call the unified script.
+
+---
+## App Target Configuration
+
+All scripts now use `AppTargets-AuthCodeFix.json` as a **single source of truth** for target app IDs.
+
+Built-in profiles:
+
+* `baseline-dev-tools` (default)
+* `strict-admin-only`
+
+Each script supports:
+
+* `-ProfileName`
+* `-IncludeAppIds`
+* `-ExcludeAppIds`
+
+
 ## Prerequisites
 
 * PowerShell 7.x recommended
@@ -99,22 +148,36 @@ These permissions are required to:
 
 ## Recommended Usage Order
 
+### One-command orchestrated flow (recommended)
+
+```powershell
+.\(3)Invoke-EntraAppRole-AuthCodeFix.ps1 -GroupDisplayName "Restricted-Microsoft-CLI-Access" -ProfileName baseline-dev-tools
+```
+
+Dry-run with `-WhatIf`:
+
+```powershell
+.\(3)Invoke-EntraAppRole-AuthCodeFix.ps1 -GroupDisplayName "Restricted-Microsoft-CLI-Access" -ProfileName baseline-dev-tools -WhatIf
+```
+
+### Script-by-script flow
+
 1. **Assess current state**
 
    ```powershell
-   .\Identify-EntraAppRole-AuthCodeFix.ps1
+   .\(0)Identify-EntraAppRole-AuthCodeFix.ps1
    ```
 
 2. **Apply mitigation (create/reuse group and restrict apps)**
 
    ```powershell
-   .\CreateRestrict-EntraAppRole-AuthCodeFix.ps1 -GroupDisplayName "Restricted-Microsoft-CLI-Access"
+   .\(1)CreateRestrict-EntraAppRole-AuthCodeFix.ps1 -GroupDisplayName "Restricted-Microsoft-CLI-Access"
    ```
 
 3. **Validate assignments**
 
    ```powershell
-   .\List-EntraAppRole-RequiredGroups-AuthCodeFix.ps1
+   .\(2)List-EntraAppRole-RequiredGroups-AuthCodeFix.ps1
    ```
 
 ---
@@ -129,7 +192,7 @@ The mitigation targets commonly abused Microsoft first-party public-client apps,
 * Visual Studio Code
 * Microsoft Teams PowerShell Cmdlets
 
-You can customize the app list by modifying the `$Apps` parameter in the scripts.
+You can customize scope by selecting a profile and/or using `-IncludeAppIds` and `-ExcludeAppIds`.
 
 ---
 
