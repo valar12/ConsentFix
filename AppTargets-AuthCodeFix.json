@@ -1,0 +1,21 @@
+{
+  "profiles": {
+    "baseline-dev-tools": {
+      "description": "Commonly abused Microsoft first-party public-client apps used for CLI/dev tooling.",
+      "apps": {
+        "04b07795-8ddb-461a-bbee-02f9e1bf7b46": "Microsoft Azure CLI",
+        "1950a258-227b-4e31-a9cf-717495945fc2": "Microsoft Azure PowerShell",
+        "04f0c124-f2bc-4f59-8241-bf6df9866bbd": "Visual Studio",
+        "aebc6443-996d-45c2-90f0-388ff96faa56": "Visual Studio Code",
+        "12128f48-ec9e-42f0-b203-ea49fb6af367": "MS Teams Powershell Cmdlets"
+      }
+    },
+    "strict-admin-only": {
+      "description": "Minimal profile for highly restricted tenants that only need Azure CLI and Azure PowerShell.",
+      "apps": {
+        "04b07795-8ddb-461a-bbee-02f9e1bf7b46": "Microsoft Azure CLI",
+        "1950a258-227b-4e31-a9cf-717495945fc2": "Microsoft Azure PowerShell"
+      }
+    }
+  }
+}
